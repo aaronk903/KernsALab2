@@ -138,4 +138,45 @@ public class PayStationImplTest {
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());
     }
+    
+    @Test
+    public void shouldReturn35CentsThen0AfterEmpty() 
+            throws IllegalCoinException {
+        int total;
+        
+        ps.addPayment(10);
+        ps.addPayment(25);
+        ps.buy();
+        ps.addPayment(25);
+        ps.cancel();
+        
+        total = ps.empty();
+        assertEquals("Total should be 35",
+                35, total);
+        
+        total = ps.empty();
+        assertEquals("Total should be 0",
+                0, total);
+    }
+    
+    @Test
+    public void shouldReturnFiveNickels()
+            throws IllegalCoinException {
+        
+        for(int i = 0; i < 5; ++i) {
+            ps.addPayment(5);
+        }
+        int numNickels = ps.cancel().get(5);
+        assertEquals("The number of nickels should be 5",
+                5, numNickels);
+    }
+    
+    @Test
+    public void shouldReturnMapWithOneQuarter()
+            throws IllegalCoinException {
+        ps.addPayment(25);
+        int numQuarters = ps.cancel().get(25);
+        assertEquals("The number of quarters should be 1",
+                1, numQuarters);
+    }
 }

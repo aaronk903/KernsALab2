@@ -204,4 +204,23 @@ public class PayStationImplTest {
                 1, numDimes);
     }
     
+    /**
+     * Returns a map containing a mixture of coins,
+     * e.g. one quarter and two dimes
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shouldReturnMapWithMixtureOfCoins()
+            throws IllegalCoinException {
+        ps.addPayment(25);
+        ps.addPayment(10);
+        ps.addPayment(10);
+        
+        Map<Integer,Integer> coinMap = ps.cancel();
+        assertEquals("The number of quarters should be 1",
+                1, (int)coinMap.get(25));
+        assertEquals("The number of dimes should be 2",
+                2, (int)coinMap.get(10));
+    }
+    
 }

@@ -238,5 +238,24 @@ public class PayStationImplTest {
         assertFalse("Should not contain 'quarter' key", 
                 coinMap.containsKey(25));
     }
+    
+    /**
+     * Clears map after calling cancel
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shoulClearMapAfterCancel()
+            throws IllegalCoinException {
+        ps.addPayment(25);
+        ps.addPayment(10);
+        
+        Map<Integer,Integer> coinMap = ps.cancel();
+        assertFalse("Should return nonempty map on first cancel call", 
+                coinMap.isEmpty());
+        
+        coinMap = ps.cancel();
+        assertTrue("Should return empty map on this second cancel call",
+                coinMap.isEmpty());
+    }
 
 }

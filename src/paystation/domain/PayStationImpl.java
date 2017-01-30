@@ -26,13 +26,10 @@ public class PayStationImpl implements PayStation {
     private int insertedSoFar;
     private int timeBought;
     private int moneyEarned;
-    private static final Map<Integer, Integer> coinMap = createCoinMap();
+    public static Map<Integer, Integer> coinMap = createCoinMap();
     
     private static Map<Integer, Integer> createCoinMap() {
-         Map<Integer,Integer> coinsInserted = new HashMap<Integer,Integer>();
-         coinsInserted.put(5, 0);
-         coinsInserted.put(10, 0);
-         coinsInserted.put(25, 0);
+         Map<Integer,Integer> coinsInserted = new HashMap<>();
          return coinsInserted;
     }
 
@@ -41,13 +38,25 @@ public class PayStationImpl implements PayStation {
             throws IllegalCoinException {
         switch (coinValue) {
             case 5: 
-                coinMap.replace(5, coinMap.get(5) + 1);
+                if(coinMap.containsKey(5)){
+                    coinMap.replace(5, coinMap.get(5) + 1);
+                } else {
+                    coinMap.put(5, 1);
+                }
                 break;
             case 10: 
-                coinMap.replace(10, coinMap.get(10) + 1);
+                if(coinMap.containsKey(10)){
+                    coinMap.replace(10, coinMap.get(10) + 1);
+                } else {
+                    coinMap.put(10, 1);
+                }
                 break;
             case 25: 
-                coinMap.replace(25, coinMap.get(25) + 1);
+                if(coinMap.containsKey(25)){
+                    coinMap.replace(25, coinMap.get(25) + 1);
+                } else {
+                    coinMap.put(25, 1);
+                }
                 break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
@@ -72,7 +81,7 @@ public class PayStationImpl implements PayStation {
     @Override
     public Map<Integer, Integer> cancel() {
         Map<Integer,Integer> clonedCoinMap 
-                = new HashMap<Integer,Integer>(coinMap);
+                = new HashMap<>(coinMap);
         reset();
         return clonedCoinMap;
     }
@@ -90,8 +99,6 @@ public class PayStationImpl implements PayStation {
     }
     
     private void resetCoinMap() {
-    for (Map.Entry<Integer, Integer> entry : coinMap.entrySet()){
-        entry.setValue(0);
-    }
+        coinMap = createCoinMap();
     }
 }

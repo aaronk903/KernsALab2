@@ -11,6 +11,7 @@
  */
 package paystation.domain;
 
+import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -139,44 +140,38 @@ public class PayStationImplTest {
                 10, ps.readDisplay());
     }
     
+    /**
+     * Call to empty() returns total amount entered
+     * since last empty call
+     * @throws IllegalCoinException 
+     */
     @Test
-    public void shouldReturn35CentsThen0AfterEmpty() 
+    public void shouldReturn35CentsAfterEmpty() 
             throws IllegalCoinException {
         int total;
-        
         ps.addPayment(10);
         ps.addPayment(25);
         ps.buy();
-        ps.addPayment(25);
-        ps.cancel();
-        
         total = ps.empty();
         assertEquals("Total should be 35",
                 35, total);
-        
+    }
+    
+    /**
+     * Canceled entry does not add to the amount 
+     * returned by empty
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shouldReturn0AfterCanceledTransaction()
+            throws IllegalCoinException {
+        int total;
+        ps.addPayment(25);
+        ps.addPayment(10);
+        ps.cancel();
         total = ps.empty();
-        assertEquals("Total should be 0",
+        assertEquals("Total should be 0 after cancellation",
                 0, total);
     }
-    
-    @Test
-    public void shouldReturnFiveNickels()
-            throws IllegalCoinException {
-        
-        for(int i = 0; i < 5; ++i) {
-            ps.addPayment(5);
-        }
-        int numNickels = ps.cancel().get(5);
-        assertEquals("The number of nickels should be 5",
-                5, numNickels);
-    }
-    
-    @Test
-    public void shouldReturnMapWithOneQuarter()
-            throws IllegalCoinException {
-        ps.addPayment(25);
-        int numQuarters = ps.cancel().get(25);
-        assertEquals("The number of quarters should be 1",
-                1, numQuarters);
-    }
+
 }

@@ -189,5 +189,19 @@ public class PayStationImplTest {
         assertEquals("Total should be 0 after emptied",
                 0, totalAfterEmpty);
     }
-
+    
+    /**
+     * Returns a map containing one dime after
+     * the transaction is canceled
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shouldReturnMapWithOneDime()
+            throws IllegalCoinException {
+        ps.addPayment(10);
+        int numDimes = ps.cancel().get(10);
+        assertEquals("The number of dimes should be 1",
+                1, numDimes);
+    }
+    
 }

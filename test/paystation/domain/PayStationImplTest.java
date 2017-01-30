@@ -173,5 +173,21 @@ public class PayStationImplTest {
         assertEquals("Total should be 0 after cancellation",
                 0, total);
     }
+        
+    /**
+     * Total should be zero after empty is called
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shouldResetTotalToZero()
+            throws IllegalCoinException {
+        int totalAfterEmpty;
+        ps.addPayment(25);
+        ps.buy();
+        ps.empty();
+        totalAfterEmpty = ps.empty();
+        assertEquals("Total should be 0 after emptied",
+                0, totalAfterEmpty);
+    }
 
 }

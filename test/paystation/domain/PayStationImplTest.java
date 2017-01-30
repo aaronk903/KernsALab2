@@ -223,4 +223,20 @@ public class PayStationImplTest {
                 2, (int)coinMap.get(10));
     }
     
+    /**
+     * Returns a map with keys: 'dime', and 'nickel', 
+     * but not 'quarter'
+     * @throws IllegalCoinException 
+     */
+    @Test
+    public void shouldReturnMapNotContainingCoinNotEntered()
+            throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.addPayment(5);
+        
+        Map<Integer,Integer> coinMap = ps.cancel();
+        assertFalse("Should not contain 'quarter' key", 
+                coinMap.containsKey(25));
+    }
+
 }
